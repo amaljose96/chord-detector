@@ -7,15 +7,20 @@ This labelled data is then sent to the classifier which learns this data and can
 
 ## Data labeller
 
-This file reads the data file, plays each beat data to the user one by one and ask for the corresponding chord. The chord is then converted into classlabel and saved as \<song_name\>_labelled.txt
+This file reads the data file, plays each beat data to the user one by one and ask for the corresponding chord. The chord is then converted into classlabel and saved as \<song_name\>\_labelled.txt
 Chord to Class label conversion are as follows:
 - The key is detected from every chord.
 - Every key can have 10 chord variations (like maj, min, maj7 etc.)
 - Class label is calculated as 'key_number \* 10 + variation_number' where key_number and variation_number are the indices.
 - Key can be obtained by dividing the class label by 10. Variation can be obtained by mod 10.
+### Prerequisites
+
+This file requires numpy for data rearrangement and pysoundcard for playing sound.
+
+> pip install numpy pysoundcard 
 
 ### How to run
-> python data_labellor.py \<name of song\>_data.txt
+> python data_labellor.py \<name of song\>\_data.txt
 ### How to label
 - For every input, give key followed by variation. eg. Cmaj, D#min etc.
 - If the data is not to be taken(ie. does not clearly define a chord or has a transition), press 'p' to pass.
@@ -23,9 +28,9 @@ Chord to Class label conversion are as follows:
 - If you want to quit, press 'q'.
 
 ## Classifier
- 
+
  To be done.
- 
+
 ## Detector
 
  To be done.

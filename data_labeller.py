@@ -1,7 +1,4 @@
 import numpy as np
-import pyaudio
-from aubio import source, tempo, sink
-import time, wave
 from pysoundcard import Stream
 import os
 import sys
