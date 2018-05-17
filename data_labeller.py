@@ -4,7 +4,6 @@ import os
 import sys
 
 
-
 """
 CLASS LABELS OF THE DATASET
 
@@ -109,6 +108,7 @@ outputfile=open(outputfilename,"w")
 
 output_data=[]
 previous_chord="null"
+num_chords=0
 for beat_data in data:
     print("For beat "+str(beat_no));
     sys.stdout.write("\033[F")
@@ -119,13 +119,14 @@ for beat_data in data:
     if(chord==""):
         if(previous_chord=="null"):
             print("First time. Passing.")
+            sys.stdout.write("\033[F")
         else:
             print("Using previos chord:"+previous_chord)
             chord=previous_chord
-            write_data=beat_data.reshape((frames_limit*hop_s))
-            for el in write_data:
-                outputfile.write(str(el)+"\t")
-            outputfile.write(str(getClassLabel(chord))+"\n")
+            write_data=list(beat_data.reshape((frames_limit*hop_s)))
+            write_data.append(getClassLabel(chord))
+            output_data.append(write_data)
+            num_chords += 1
     elif(chord=="p"):
         print("Pass")
     elif(chord=="Quit" or chord=="q" or chord=="quit"):
@@ -136,13 +137,20 @@ for beat_data in data:
     else:
         previous_chord=chord;
         print("Chord="+chord);
-        write_data=beat_data.reshape((frames_limit*hop_s))
-        for el in write_data:
-            outputfile.write(str(el)+"\t")
-        outputfile.write(str(getClassLabel(chord))+"\n")
+        write_data=list(beat_data.reshape((frames_limit*hop_s)))
+        write_data.append(getClassLabel(chord))
+        output_data.append(write_data)
+        num_chords += 1
     s.stop();
     beat_no=beat_no+1
 
-
-
 print("Done with taking labels")
+print("Writing into file")
+for line in output_data:
+    count=0
+    for el in line:
+        outputfile.write(str(el)+"\t")
+        count=count+1;
+    outputfile.write("\n")
+
+print("Written into file.")
