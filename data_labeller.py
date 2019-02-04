@@ -78,6 +78,7 @@ data_name=sys.argv[1]
 inputfile=open(data_name,"r")
 inputdata=[]
 data=[]
+print("Opened "+data_name)
 print("Loading data..")
 
 for line in inputfile:
