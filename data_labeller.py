@@ -104,7 +104,11 @@ beat_no=0
 outputfilename="_".join(data_name.split('_')[0:-1])+"_labelled.txt";
 outputfile=open(outputfilename,"w")
 
-
+#Checking if Auto Mode
+default_chord="";
+if( getClassLabel ( (data_name.split('_'))[0] ) == 0 ):
+    default_chord=(data_name.split('_'))[0]
+    print("Auto mode")
 
 output_data=[]
 previous_chord="null"
@@ -115,13 +119,19 @@ for beat_data in data:
     s.start();
     for samples in beat_data:
         s.write(samples)
-    chord=raw_input("Enter chord:"+str(keys)+" "+str(variations)+" : ")
+    if(default_chord==""):
+        chord=raw_input("Enter chord:"+str(keys)+" "+str(variations)+" : ")
+    else:
+        previous_chord=default_chord;
+        chord=""
+        print("Using default chord  : "+default_chord)    
     if(chord==""):
         if(previous_chord=="null"):
             print("First time. Passing.")
             sys.stdout.write("\033[F")
         else:
-            print("Using previos chord:"+previous_chord)
+            if(default_chord==""):
+                print("Using previos chord:"+previous_chord)
             chord=previous_chord
             write_data=list(beat_data.reshape((frames_limit*hop_s)))
             write_data.append(getClassLabel(chord))
